@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard JAS Premium</title>
+
+    <!-- Fuente -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Librerías -->
+    <script src="libs/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>JAS Premium</h2>
+
+            <span>
+                Dashboard Operativo
+            </span>
+
+        </div>
+
+        <ul>
+
+            <li><a href="#kpis">KPIs</a></li>
+
+            <li><a href="#ventas">Ventas</a></li>
+
+            <li><a href="#rechazos">Rechazos</a></li>
+
+            <li><a href="#heatmap">Heatmap</a></li>
+
+        </ul>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+
+    <main class="main">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Dashboard JAS Premium
+                </h1>
+
+                <small id="ultimaActualizacion">
+                    Sin información cargada
+                </small>
+
+            </div>
+
+            <div>
+
+                <input
+                    type="file"
+                    id="excelFile"
+                    accept=".xlsx,.xls">
+
+                <button id="btnActualizar">
+                    Cargar Excel
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- FILTROS -->
+
+        <section class="filters">
+
+            <select id="filtroClase">
+                <option value="">Clase</option>
+            </select>
+
+            <select id="filtroMovimiento">
+                <option value="">Movimiento</option>
+            </select>
+
+            <select id="filtroCET">
+                <option value="">CET</option>
+            </select>
+
+            <select id="filtroSKU">
+                <option value="">SKU</option>
+            </select>
+
+            <select id="filtroCliente">
+                <option value="">Cliente</option>
+            </select>
+
+        </section>
+
+        <!-- KPI -->
+
+        <section id="kpis" class="kpi-grid">
+
+            <div class="kpi-card">
+                <h3>Total Registros</h3>
+                <span id="kpiMovimientos">0</span>
+            </div>
+
+            <div class="kpi-card">
+                <h3>Clientes</h3>
+                <span id="kpiClientes">0</span>
+            </div>
+
+            <div class="kpi-card">
+                <h3>SKU</h3>
+                <span id="kpiSKU">0</span>
+            </div>
+
+            <div class="kpi-card">
+                <h3>Cajas Físicas</h3>
+                <span id="kpiCajas">0</span>
+            </div>
+
+        </section>
+
+        <!-- DASHBOARD PRINCIPAL -->
+
+        <section
+            id="ventas"
+            class="dashboard-grid">
+
+            <!-- Tendencia -->
+
+            <div class="chart-card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Tendencia Temporal
+                    </h3>
+
+                    <button
+                        onclick="exportChart('chartTrend')">
+                        PNG
+                    </button>
+
+                </div>
+
+                <canvas id="chartTrend"></canvas>
+
+            </div>
+
+            <!-- Clase -->
+
+            <div class="chart-card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Clase vs Cajas
+                    </h3>
+
+                    <button
+                        onclick="exportChart('chartClaseMov')">
+                        PNG
+                    </button>
+
+                </div>
+
+                <canvas id="chartClaseMov"></canvas>
+
+            </div>
+
+            <!-- Dona -->
+
+            <div class="chart-card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Distribución por Clase
+                    </h3>
+
+                    <button
+                        onclick="exportChart('chartDona')">
+                        PNG
+                    </button>
+
+                </div>
+
+                <canvas id="chartDona"></canvas>
+
+            </div>
+
+            <!-- Acumulado -->
+
+            <div class="chart-card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Acumulado de Cajas
+                    </h3>
+
+                    <button
+                        onclick="exportChart('chartArea')">
+                        PNG
+                    </button>
+
+                </div>
+
+                <canvas id="chartArea"></canvas>
+
+            </div>
+
+            <!-- Top Clientes -->
+
+            <div class="chart-card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Top 10 Clientes
+                    </h3>
+
+                    <button
+                        onclick="exportChart('chartRanking')">
+                        PNG
+                    </button>
+
+                </div>
+
+                <canvas id="chartRanking"></canvas>
+
+            </div>
+
+            <!-- Top SKU -->
+
+            <div class="chart-card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Top SKU
+                    </h3>
+
+                    <button
+                        onclick="exportChart('chartSKU')">
+                        PNG
+                    </button>
+
+                </div>
+
+                <canvas id="chartSKU"></canvas>
+
+            </div>
+
+        </section>
+
+        <!-- RECHAZOS -->
+
+        <h2
+            id="rechazos"
+            class="section-title">
+
+            Análisis de Rechazos
+
+        </h2>
+
+        <section class="dashboard-grid">
+
+            <div class="chart-card">
+
+                <h3>
+                    Rechazos por Cliente
+                </h3>
+
+                <canvas id="chartRechazosCliente"></canvas>
+
+            </div>
+
+            <div class="chart-card">
+
+                <h3>
+                    Rechazos por CET
+                </h3>
+
+                <canvas id="chartRechazosCET"></canvas>
+
+            </div>
+
+        </section>
+
+        <!-- HEATMAP -->
+
+        <h2
+            id="heatmap"
+            class="section-title">
+
+            Heatmap Clase x Movimiento
+
+        </h2>
+
+        <div class="chart-card">
+
+            <div id="heatmapContainer"></div>
+
+        </div>
+
+    </main>
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
